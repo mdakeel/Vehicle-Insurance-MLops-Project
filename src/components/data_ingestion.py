@@ -10,12 +10,12 @@ from src.logger import logging
 from src.data_access.proj1_data import Proj1Data
 
 class DataIngestion:
-    def __init__(self):
+    def __init__(self, config: DataIngestionConfig = DataIngestionConfig()):
         try:
-            self.config = DataIngestionConfig()
+            self.config = config
         except Exception as e:
-            raise CustomException(e,sys)
-        
+            raise CustomException(e, sys)
+
 
     def export_data_into_feature_store(self)->DataFrame:
         try:
