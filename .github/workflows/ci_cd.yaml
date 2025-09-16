@@ -1,0 +1,60 @@
+name: Vehicle Insurance App CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  Continuous-Integration:
+    name: Build & Test Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker Image
+        run: |
+          docker build -t vehicle-insurance-app:latest .
+
+      # Optional: Run tests inside container
+      - name: Run Unit Tests
+        run: |
+          docker run --rm vehicle-insurance-app:latest pytest
+          
+      # Optional: Push to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Image to Docker Hub
+        run: |
+          docker tag vehicle-insurance-app:latest ${{ secrets.DOCKER_USERNAME }}/vehicle-insurance-app:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/vehicle-insurance-app:latest
+
+  Continuous-Deployment:
+    name: Deploy to Local Server
+    needs: Continuous-Integration
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Stop Existing Container (if running)
+        run: |
+          docker stop vehicle-insurance-app || true
+          docker rm vehicle-insurance-app || true
+
+      - name: Run New Docker Container
+        run: |
+          docker run -d --name vehicle-insurance-app -p 5000:5000 \
+            -e MONGODB_URL="${{ secrets.MONGODB_URL }}" \
+            ${{ secrets.DOCKER_USERNAME }}/vehicle-insurance-app:latest

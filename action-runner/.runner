@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 2,
+  "agentName": "AAKILTAYYAB",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus14.actions.githubusercontent.com/o1iWs5pjDDZjWE5AQy9wxa0Wylhb1IjdzPbtpiAKA2xUXCUL3m/",
+  "gitHubUrl": "https://github.com/mdakeel/Vehicle-Insurance-MLops-Project",
+  "workFolder": "_work",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}
