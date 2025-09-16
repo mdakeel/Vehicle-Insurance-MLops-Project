@@ -10,6 +10,7 @@ from_root
 dill
 certifi
 PyYAML
+pytest
 boto3
 mypy-boto3-s3
 botocore
