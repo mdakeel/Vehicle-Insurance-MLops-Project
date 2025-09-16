@@ -123,7 +123,7 @@ class TrainPipeline:
             print("Starting model trining...")
             model_trainer_artifact = self.start_model_trainer(data_transformation_artifact=data_transformation_artifact)
             print("Completed model training")
-            print("Starting model ")
+            print("Starting model Evaluation")
             model_evaluation_artifact = self.start_model_evaluation(data_ingestion_artifact=data_ingestion_artifact,
                                                                     model_trainer_artifact=model_trainer_artifact)
             print("Completed model Evaluation")

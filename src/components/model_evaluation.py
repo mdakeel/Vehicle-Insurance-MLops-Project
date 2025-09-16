@@ -1,6 +1,5 @@
 import sys
 import pandas as pd
-import numpy as np
 from typing import Optional
 from dataclasses import dataclass
 from sklearn.metrics import f1_score
@@ -38,13 +37,10 @@ class ModelEvaluation:
         """Load best model from local path if available."""
         try:
             best_model_path = self.model_eval_config.best_model_path
-            if self.utils.is_file_exists(best_model_path):
-                logging.info(f"Best model found at {best_model_path}")
-                return self.utils.load_object(best_model_path)
-            logging.info("No best model found locally.")
-            return None
+            return self.utils.load_object(best_model_path)
         except Exception as e:
-            raise CustomException(e, sys)
+            logging.warning(f"Best model not found at {self.model_eval_config.best_model_path}")
+            return None  # Gracefully handle missing model
 
     def _map_gender_column(self, df):
         logging.info("Mapping 'Gender' column to binary values")

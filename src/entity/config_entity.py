@@ -56,16 +56,36 @@ class ModelTrainerConfig:
 
 @dataclass
 class ModelEvaluationConfig:
+    model_evaluation_dir: str = os.path.join(training_pipeline_config.artifact_dir, MODEL_TRAINER_DIR_NAME)
+    best_model_path: str = os.path.join(model_evaluation_dir, MODEL_TRAINER_TRAINED_MODEL_DIR, MODEL_FILE_NAME)
     changed_threshold_score: float = MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE
-    bucket_name: str = MODEL_BUCKET_NAME
-    best_model_path: str = MODEL_FILE_NAME
 
 # @dataclass
 # class ModelPusherConfig:
 #     bucket_name: str = MODEL_BUCKET_NAME
 #     s3_model_key_path: str = MODEL_FILE_NAME
 
-# @dataclass
-# class VehiclePredictorConfig:
-#     model_file_path: str = MODEL_FILE_NAME
-#     model_bucket_name: str = MODEL_BUCKET_NAME
+
+# def get_latest_model_path(base_dir="artifact") -> str:
+#     try:
+#         folders = sorted(
+#             [f for f in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, f))],
+#             reverse=True
+#         )
+#         for folder in folders:
+#             candidate = os.path.join(base_dir, folder, "model_trainer", "trained_model", "model.pkl")
+#             print(f"🔍 Checking: {candidate}")  # Add this line
+#             if os.path.isfile(candidate):
+#                 print(f"✅ Found model at: {candidate}")
+#                 return candidate
+#         raise FileNotFoundError("No valid model.pkl found in artifact folders.")
+#     except Exception as e:
+#         raise Exception(f"Error while locating latest model: {e}")
+
+
+
+
+@dataclass
+class VehiclePredictorConfig:
+    # model_file_path: str = get_latest_model_path()
+    model_file_path: str = "artifact/09_16_2025_12_20_40/model_trainer/trained_model/model.pkl"
